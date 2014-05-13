@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="../styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="../styles/kendo.default.min.css" rel="stylesheet" />
+	<script src="require-2.1.10.js"></script>
+	<script src="../src/jquery.js"></script>
+</head>
+<body>
+	<input type="button" id="o" value="Open" text="open"/>
+<div id="example" class="k-content">
+
+    <script src="./products.js"></script>
+
+    <div class="demo-section">
+        <div id="listView" style=""></div>
+        <!--div id="pager" class="k-pager-wrap"></div-->
+    </div>
+
+    <script type="text/x-kendo-template" id="template">
+        <div class="product">
+			<div class="edit-buttons">
+                <a href="\\#"><span class="k-icon k-cancel k-delete-button"></span></a>
+            </div>
+            <span>#:ProductName#</span>
+        </div>
+    </script>
+
+    <script>
+		require.config({
+			 baseUrl: "../src",
+			 paths: {
+				jquery: ""
+			 }
+		});
+		require(["kendo.ui.core"], function() {
+			$(function() {
+				var dataSource = new kendo.data.DataSource({
+					data: products/*,
+					pageSize: 21*/
+				});
+
+				$("#pager").kendoPager({
+					dataSource: dataSource
+				});
+
+				$("#listView").kendoListView({
+					dataSource: dataSource,
+					selectable: "multiple",
+					template: kendo.template($("#template").html())
+				});
+				
+				var popup = $("#example").kendoPopup({}).data("kendoPopup");
+				
+				$("#o").click(function() {
+					popup.open();
+				});
+			});
+		});
+    </script>
+
+	<style scoped>
+        .demo-section {
+                width: 200px;
+                margin: 20px auto;
+                border: 0;
+                background: none;
+            }
+        #listView {
+            padding: 10px 5px;
+            margin-bottom: -1px;
+            min-height: 100px;
+			height:100px;
+			overflow:auto;
+        }
+        .product {
+			/*border: solid 1px gray;*/
+            position: relative;
+            margin: 0 5px;
+            padding: 0;
+			cursor:pointer;
+        }
+		 .product span:hover {
+			outline: :#00FF00 dotted thick;
+		 }
+        .product h3 {
+            margin: 0;
+            padding: 3px 5px 0 0;
+            max-width: 96px;
+            overflow: hidden;
+            line-height: 1.1em;
+            font-size: .9em;
+            font-weight: normal;
+            text-transform: uppercase;
+            color: #999;
+			display:inline;
+        }
+        .k-listview:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+		
+		.edit-buttons {
+			visibility:hidden;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 2px 2px 0 3px;
+        }
+		.product:hover .edit-buttons {
+			visibility:visible;
+		}
+		
+        .edit-buttons .k-button
+        {
+            width: 26px;
+            margin-bottom: 1px;
+        }
+    </style>
+</div>
+
+
+</body>
+</html>

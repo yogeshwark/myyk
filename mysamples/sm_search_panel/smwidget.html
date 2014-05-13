@@ -1,0 +1,47 @@
+<html>
+<head>
+    <link rel='stylesheet' href='../../styles/kendo.common.min.css'>
+    <link rel='stylesheet' href='../../styles/kendo.silver.min.css'>
+    <link rel='stylesheet' href='css/eqpanelbar.css'>
+    <script src="../../src/jquery.js"></script>
+
+    <script src='vendors/underscore-1.5.2.js'></script>
+    <script src='../require-2.1.10.js'></script>
+</head>
+<body>
+<button id='openSearchPanel'>Select Objects</button>
+
+<ul id="dropArea" style="height: 250px;background: lightgray">
+
+</ul>
+<script>
+    /*require.config({
+        baseUrl: "../../../"
+    });*/
+    require(["./data", "../../src/kendo.ui.core", "./sm.search.panel", "./multiselct.panelbar"], function() {
+        var srcPanel = $('#openSearchPanel').kendoSMSearchPanel({
+            rows: 3,
+            dataSource: ds1,
+            connections: [
+                { text: "connection1" },
+                { text: 'connection2'}
+            ],
+            dropTarget: "#dropArea",
+            drop: function(e) {
+                $(e.selected).each(function(i, el) {
+                    $(el).closest("ul").index(el);
+                });
+                //console.log($(e.selected).text());
+            },
+            getUpdatedDS: function (value) {
+                if(value == "connection1")
+                    return ds2;
+                else
+                    return ds1;
+            }
+        }).data("kendoSMSearchPanel");
+    });
+</script>
+</body>
+</html>
+
